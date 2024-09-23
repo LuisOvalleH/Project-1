@@ -1,6 +1,6 @@
-
-class MinHeap {
-    private heap: number[];
+import { order } from "./order_of_compra";
+export class MinHeap {
+    private heap: order[];
     private n: number; // n = cantidad de elementos ingresados
 
     constructor(size: number){
@@ -12,7 +12,7 @@ class MinHeap {
         return this.n == 0
     }
 
-    public checkMin(): number {
+    public checkMin(): order {
         return this.heap[1]
     }
 
@@ -20,7 +20,7 @@ class MinHeap {
         return this.n
     }
 
-    public insert(value: number): void {
+    public insert(value: order): void {
         if (this.n == (this.heap.length - 1))
             this.resize(2*this.heap.length)
         this.n++;
@@ -30,8 +30,8 @@ class MinHeap {
 
     private swap(i:number): void{
         let father: number = Math.floor(i / 2)
-        while (i>1 && this.heap[father] > this.heap[i]){
-            let temp: number = this.heap[father];
+        while (i>1 && this.heap[father].GetPrice() > this.heap[i].GetPrice()){
+            let temp: order = this.heap[father];
             this.heap[father] = this.heap[i]
             this.heap[i] = temp;
             i = father
@@ -40,7 +40,7 @@ class MinHeap {
     }
 
     private resize (newSize: number) : void{
-        let newHeap: number [] = new Array (newSize);
+        let newHeap: order [] = new Array (newSize);
         for (let i = 0; i < this.heap.length; i++){
             newHeap[i] = this.heap[i]
         this.heap = newHeap
@@ -48,8 +48,8 @@ class MinHeap {
     }
 
 
-    public getMin():  number {
-        let min: number = this.heap[1];
+    public getMin():  order {
+        let min: order = this.heap[1];
         this.heap[1] = this.heap[this.n];
         delete this.heap[this.n];
         this.n--;
@@ -67,7 +67,7 @@ class MinHeap {
                 j++;
             if (this.heap[i] <= this.heap[j])
                 break
-            let temp: number = this.heap[i];
+            let temp: order = this.heap[i];
             this.heap[i] = this.heap[j]
             this.heap[j] = temp;
             i = j;
@@ -75,13 +75,12 @@ class MinHeap {
         }
     }
     
-    public print(): void{
-        let tree: string = "";
-        for (let i = 1; i <= this.n; i++){
-            tree +=  "[" + this.heap[i] + "]"
-            
+    public print(): void {
+        let tree: string = "Órdenes de Ventas:\n";
+        for (let i = 1; i <= this.n; i++) {
+            const currentOrder = this.heap[i];
+            tree += `Empresa: ${currentOrder.GetCompany()}, Cantidad: ${currentOrder.GetQuantity()}, Precio: ${currentOrder.GetPrice()}\n`;
         }
-        console.log(tree)
-
+        console.log(tree);
     }
 }
