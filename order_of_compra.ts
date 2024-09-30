@@ -28,6 +28,10 @@ export class order{
         return this.quantity
     }
 
+    public adjustQuantity(newQuantity: number): void {
+        this.quantity = newQuantity;
+    }
+
 
     
 }

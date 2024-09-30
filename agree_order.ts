@@ -31,14 +31,39 @@ export class Agree_Order{
     }
 
 
-    public matching_order(): void{
+    public matchOrders(): void {
         while (!this.buy_order.isEmpty() && !this.sell_order.isEmpty()) {
-            let buyOrder : order  = this.buy_order.checkMax();
-            let sellOrder : order = this.sell_order.checkMin();
-            
-            if (buyOrder.GetPrice() >= sellOrder.GetPrice()){
-                
+            const buyOrder = this.buy_order.checkMax();
+            const sellOrder = this.sell_order.checkMin();
+    
+            if (buyOrder.GetPrice() >= sellOrder.GetPrice()) {
+                const matchedQuantity = Math.min(buyOrder.GetQuantity(), sellOrder.GetQuantity());
+    
+                console.log('Emparejando orden de compra y venta:') 
+                console.log(`Empresa: ${buyOrder.GetCompany()} vs ${sellOrder.GetCompany()}
+                    Precio de compra: ${buyOrder.GetPrice()} vs Precio de venta: ${sellOrder.GetPrice()}
+                    Cantidad emparejada: ${matchedQuantity}`);
+    
+                // Ajusta las cantidades de las órdenes después del emparejamiento
+                buyOrder.adjustQuantity(buyOrder.GetQuantity() - matchedQuantity);
+                sellOrder.adjustQuantity(sellOrder.GetQuantity() - matchedQuantity);
+    
+                // Elimina órdenes completamente cumplidas
+                if (buyOrder.GetQuantity() === 0) {
+                    this.buy_order.getMax(); // Elimina el máximo
+                }
+    
+                if (sellOrder.GetQuantity() === 0) {
+                    this.sell_order.getMin(); // Elimina el mínimo
+                }
+            } else {
+                // No hay más coincidencias posibles
+                break;
             }
-        } 
+        }
+
     }
+
+    
+    
 }
