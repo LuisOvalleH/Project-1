@@ -22,3 +22,5 @@ company.show_orders()
 company.matchOrders()
 
 company.show_orders()
+
+company.showTransactionHistory()
